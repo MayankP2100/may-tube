@@ -14,12 +14,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={alexandria.variable} suppressHydrationWarning>
+    <html
+      lang='en'
+      className={alexandria.variable}
+      suppressHydrationWarning
+    >
       <head />
       <body>
         <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
+          attribute='class'
+          defaultTheme='system'
           enableSystem
           disableTransitionOnChange
         >

@@ -1,0 +1,22 @@
+<svg
+  width='200'
+  height='64'
+  viewBox='0 0 200 64'
+  xmlns='http://www.w3.org/2000/svg'
+>
+  <polygon
+    points='16,10 48,32 16,54'
+    fill='#32CD32'
+  />
+  <text
+    x='42%'
+    y='65%'
+    font-size='28'
+    font-family='Alexandria,Arial'
+    font-weight='bold'
+    fill='white'
+    text-anchor='middle'
+  >
+    MayTube
+  </text>
+</svg>
