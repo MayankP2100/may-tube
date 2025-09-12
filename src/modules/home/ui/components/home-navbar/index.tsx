@@ -3,10 +3,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import SearchInput from './search-input';
+import AuthButton from '@/modules/auth/ui/components/auth-button';
 
 export default function HomeNavbar() {
   return (
-    <nav className='bg-primary-foreground fixed top-0 right-0 left-0 z-50 flex h-16 items-center px-2 pr-5'>
+    <nav className='fixed top-0 right-0 left-0 z-50 flex h-16 items-center px-2 pr-5'>
       <div className='flex w-full items-center gap-4'>
         {/* Menu and Logo */}
         <div className='flex items-center'>
@@ -23,7 +24,11 @@ export default function HomeNavbar() {
 
         {/* Search bar */}
         <div className='mx-auto flex max-w-[720px] flex-1 justify-center'>
-          <SearchInput/>
+          <SearchInput />
+        </div>
+
+        <div className='flex flex-shrink-0 items-center gap-4'>
+          <AuthButton />
         </div>
       </div>
     </nav>

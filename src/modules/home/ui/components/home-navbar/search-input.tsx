@@ -14,6 +14,7 @@ export default function SearchInput() {
         {/* TODO: add remove search button */}
       </div>
       <button
+        title='Search'
         type='submit'
         className='bg-primary rounded-r-full border border-l-0 px-5 py-2.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50'
       >
