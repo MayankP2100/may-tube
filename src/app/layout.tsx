@@ -2,6 +2,7 @@ import { Alexandria } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ClerkProvider } from '@clerk/nextjs';
+import { TRPCReactProvider } from '@/trpc/client';
 
 const alexandria = Alexandria({
   subsets: ['latin'],
@@ -23,14 +24,16 @@ export default function RootLayout({
       >
         <head />
         <body>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <TRPCReactProvider>
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='system'
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </TRPCReactProvider>
         </body>
       </html>
     </ClerkProvider>

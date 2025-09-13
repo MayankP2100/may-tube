@@ -1,7 +1,7 @@
-export default function Home() {
-  return (
-    <div>
-      <div>I will load videos</div>
-    </div>
-  );
+import { caller } from '@/trpc/server';
+
+export default async function Home() {
+  const data = await caller.hello({ text: 'from tRPC server' });
+
+  return <div>{data.greeting}</div>;
 }
