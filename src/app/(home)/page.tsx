@@ -1,7 +1,18 @@
-import { caller } from '@/trpc/server';
+import { HydrateClient, prefetch, trpc } from '@/trpc/server';
+import { ClientGreeting } from './client-greeting';
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 
 export default async function Home() {
-  const data = await caller.hello({ text: 'from tRPC server' });
+  prefetch(trpc.hello.queryOptions({ text: '' }));
 
-  return <div>{data.greeting}</div>;
+  return (
+    <HydrateClient>
+      <ErrorBoundary fallback={<div>Something went wrong!</div>}>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ClientGreeting />
+        </Suspense>
+      </ErrorBoundary>
+    </HydrateClient>
+  );
 }
