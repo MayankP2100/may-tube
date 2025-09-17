@@ -1,18 +1,23 @@
+import HomeView from '@/modules/home/ui/views/home-view';
 import { HydrateClient, prefetch, trpc } from '@/trpc/server';
-import { ClientGreeting } from './client-greeting';
-import { Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 
-export default async function Home() {
+// This page must be dynamic to support SSR with tRPC
+// See https://trpc.io/docs/ssr
+export const dynamic = 'force-dynamic';
+
+interface PageProps {
+  searchParams: Promise<{ categoryId?: string }>;
+}
+
+const Page = async ({ searchParams }: PageProps) => {
+  const { categoryId } = await searchParams;
   prefetch(trpc.categories.getMany.queryOptions());
 
   return (
     <HydrateClient>
-      <ErrorBoundary fallback={<div>Something went wrong!</div>}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <ClientGreeting />
-        </Suspense>
-      </ErrorBoundary>
+      <HomeView categoryId={categoryId} />
     </HydrateClient>
   );
-}
+};
+
+export default Page;
