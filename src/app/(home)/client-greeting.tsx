@@ -4,8 +4,6 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useTRPC } from '@/trpc/client';
 export function ClientGreeting() {
   const trpc = useTRPC();
-  const { data } = useSuspenseQuery(
-    trpc.hello.queryOptions({ text: 'from tRPC' }),
-  );
-  return <div>{data.greeting}</div>;
+  const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
+  return <div>{data.map((category) => category.name).join(', ')}</div>;
 }
