@@ -1,7 +1,7 @@
 <svg
-  width='200'
+  width='150'
   height='64'
-  viewBox='0 0 200 64'
+  viewBox='0 0 150 64'
   xmlns='http://www.w3.org/2000/svg'
 >
   <polygon
@@ -9,7 +9,7 @@
     fill='#A2D729'
   />
   <text
-    x='42%'
+    x='45%'
     y='65%'
     font-size='28'
     font-family='Alexandria,Arial'
@@ -19,6 +19,6 @@
     stroke='#0a0a0a'
     stroke-width='1'
   >
-    MayTube
+    Studio
   </text>
 </svg>
