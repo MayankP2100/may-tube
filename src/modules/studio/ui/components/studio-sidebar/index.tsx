@@ -1,19 +1,58 @@
-import { Sidebar, SidebarContent } from '@/components/ui/sidebar';
-import React from 'react';
-import MainSection from './main-section';
-import { Separator } from '@/components/ui/separator';
-import PersonalSection from './personal-section';
+'use client';
 
-export default function HomeSidebar() {
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from '@/components/ui/sidebar';
+import React from 'react';
+import { LogOutIcon, VideoIcon } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Separator } from '@/components/ui/separator';
+import StudioSidebarHeader from './studio-sidebar-header';
+
+export default function StudioSidebar() {
+  const pathname = usePathname();
+
   return (
     <Sidebar
-      className='z-40 border-none pt-16'
+      className='top-16 z-40'
       collapsible='icon'
     >
       <SidebarContent className='bg-background'>
-        <MainSection />
-        <Separator />
-        <PersonalSection />
+        <SidebarMenu>
+          <StudioSidebarHeader />
+          <SidebarGroup>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                isActive={pathname === '/studio'}
+                tooltip='Content'
+                asChild
+              >
+                <Link href='/studio'>
+                  <VideoIcon className='size-5' />
+                  <span className='text-sm'>Content</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <Separator />
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                tooltip='Exit studio'
+                asChild
+              >
+                <Link href='/'>
+                  <LogOutIcon className='size-5' />
+                  <span className='text-sm'>Exit Studio</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarGroup>
+        </SidebarMenu>
       </SidebarContent>
     </Sidebar>
   );
