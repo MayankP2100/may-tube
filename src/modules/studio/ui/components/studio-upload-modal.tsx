@@ -1,13 +1,47 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { DEFAULT_LIMIT } from '@/constants';
+import { cn } from '@/lib/utils';
+import { useTRPC } from '@/trpc/client';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { PlusIcon } from 'lucide-react';
 import React from 'react';
+import { toast } from 'sonner';
 
 function StudioUploadModal() {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
+  const createVideo = useMutation(
+    trpc.videos.create.mutationOptions({
+      onSuccess: () => {
+        toast.success('Video created successfully');
+
+        // Invalidate the studio videos query to refetch the list
+        queryClient.invalidateQueries(
+          trpc.studio.getMany.infiniteQueryOptions(
+            {
+              limit: DEFAULT_LIMIT,
+            },
+            {
+              getNextPageParam: (lastPage) => lastPage.nextCursor,
+            },
+          ),
+        );
+      },
+      onError: (error) => {
+        toast.error(`Error creating video: ${error.message}`);
+      },
+    }),
+  );
+
   return (
-    <Button>
-      <PlusIcon />
+    <Button
+      onClick={() => createVideo.mutate()}
+      disabled={createVideo.isPending}
+    >
+      <PlusIcon className={cn(createVideo.isPending && 'animate-spin')} />
       Create
     </Button>
   );

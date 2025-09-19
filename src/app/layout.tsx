@@ -3,6 +3,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ClerkProvider } from '@clerk/nextjs';
 import { TRPCReactProvider } from '@/trpc/client';
+import { Toaster } from '@/components/ui/sonner';
 
 const alexandria = Alexandria({
   subsets: ['latin'],
@@ -31,6 +32,7 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
+              <Toaster />
               {children}
             </ThemeProvider>
           </TRPCReactProvider>
