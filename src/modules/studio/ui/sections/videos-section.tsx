@@ -1,22 +1,35 @@
 'use client';
 
+import { InfiniteScroll } from '@/components/infinite-scroll';
 import { DEFAULT_LIMIT } from '@/constants';
 import { useTRPC } from '@/trpc/client';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 
-function VideosSection() {
-  const trpc = useTRPC();
-  const { data } = useSuspenseInfiniteQuery(
-    trpc.studio.getMany.infiniteQueryOptions(
-      {
-        limit: DEFAULT_LIMIT,
-      },
-      {
-        getNextPageParam: (lastPage) => lastPage.nextCursor,
-      },
-    ),
+export const VideosSection = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ErrorBoundary fallback={<div>Error loading videos.</div>}>
+        <VideosSectionSuspense />
+      </ErrorBoundary>
+    </Suspense>
   );
+};
+
+function VideosSectionSuspense() {
+  const trpc = useTRPC();
+  const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
+    useSuspenseInfiniteQuery(
+      trpc.studio.getMany.infiniteQueryOptions(
+        {
+          limit: DEFAULT_LIMIT,
+        },
+        {
+          getNextPageParam: (lastPage) => lastPage.nextCursor,
+        },
+      ),
+    );
 
   return (
     <div>
@@ -27,8 +40,14 @@ function VideosSection() {
           ))}
         </React.Fragment>
       ))}
+      <InfiniteScroll
+        isManual
+        hasNextPage={!!hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+        fetchNextPage={fetchNextPage}
+      />
     </div>
   );
 }
 
-export default VideosSection;
+export default VideosSectionSuspense;
