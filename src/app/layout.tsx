@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { ClerkProvider } from '@clerk/nextjs';
 import { TRPCReactProvider } from '@/trpc/client';
 import { Toaster } from '@/components/ui/sonner';
+import { shadcn } from '@clerk/themes';
 
 const alexandria = Alexandria({
   subsets: ['latin'],
@@ -17,7 +18,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider afterSignOutUrl={'/'}>
+    <ClerkProvider
+      afterSignOutUrl={'/'}
+      appearance={{
+        theme: [shadcn],
+      }}
+    >
       <html
         lang='en'
         className={alexandria.variable}
