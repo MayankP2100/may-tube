@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import {
   pgTable,
   text,
@@ -20,6 +21,15 @@ export const users = pgTable(
   (t) => [uniqueIndex('clerk_id_idx').on(t.clerkId)],
 );
 
+// This only works on application side, not in the database
+// See https://orm.drizzle.team/docs/relations#defining-relations
+// Basically, if we use a db that doesn't support foreign keys such as PlanetScale,
+// we can still define relations in Drizzle ORM for easier querying.
+// But we still need to ensure data integrity ourselves.
+export const userRelations = relations(users, ({ many }) => ({
+  videos: many(videos),
+}));
+
 export const categories = pgTable(
   'categories',
   {
@@ -31,3 +41,38 @@ export const categories = pgTable(
   },
   (t) => [uniqueIndex('name_idx').on(t.name)],
 );
+
+export const categoryRelations = relations(categories, ({ many }) => ({
+  videos: many(videos),
+}));
+
+export const videos = pgTable('videos', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  title: text('title').notNull(),
+  description: text('description'),
+  userId: uuid('user_id')
+    .references(() => users.id, {
+      onDelete: 'cascade',
+    })
+    .notNull(),
+  categoryId: uuid('category_id').references(() => categories.id, {
+    onDelete: 'set null',
+  }),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});
+
+// https://orm.drizzle.team/docs/relations#foreign-keys
+// This setup allows for easy querying of related data
+// and helps maintain data integrity
+// through foreign key constraints.
+export const videoRelations = relations(videos, ({ one }) => ({
+  user: one(users, {
+    fields: [videos.userId],
+    references: [users.id],
+  }),
+  category: one(categories, {
+    fields: [videos.categoryId],
+    references: [categories.id],
+  }),
+}));
