@@ -1,12 +1,13 @@
 'use client';
 
 import ResponsiveModal from '@/components/responsive-modal';
+import StudioUploader from '@/components/studio-uploader';
 import { Button } from '@/components/ui/button';
 import { DEFAULT_LIMIT } from '@/constants';
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/trpc/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { PlusIcon } from 'lucide-react';
+import { Loader2Icon, PlusIcon } from 'lucide-react';
 import React from 'react';
 import { toast } from 'sonner';
 
@@ -41,12 +42,19 @@ function StudioUploadModal() {
     <>
       <ResponsiveModal
         title='Upload a video'
-        open={!!createVideo.data}
+        open={!!createVideo.data?.url}
         onOpenChange={() => {
           createVideo.reset();
         }}
       >
-        <p>This will be an uploader</p>
+        {createVideo.data?.url ? (
+          <StudioUploader
+            endpoint={createVideo.data.url}
+            onSuccess={() => {}}
+          />
+        ) : (
+          <Loader2Icon />
+        )}
       </ResponsiveModal>
       <Button
         onClick={() => createVideo.mutate()}
