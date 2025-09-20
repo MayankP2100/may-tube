@@ -1,5 +1,6 @@
 'use client';
 
+import ResponsiveModal from '@/components/responsive-modal';
 import { Button } from '@/components/ui/button';
 import { DEFAULT_LIMIT } from '@/constants';
 import { cn } from '@/lib/utils';
@@ -37,13 +38,24 @@ function StudioUploadModal() {
   );
 
   return (
-    <Button
-      onClick={() => createVideo.mutate()}
-      disabled={createVideo.isPending}
-    >
-      <PlusIcon className={cn(createVideo.isPending && 'animate-spin')} />
-      Create
-    </Button>
+    <>
+      <ResponsiveModal
+        title='Upload a video'
+        open={!!createVideo.data}
+        onOpenChange={() => {
+          createVideo.reset();
+        }}
+      >
+        <p>This will be an uploader</p>
+      </ResponsiveModal>
+      <Button
+        onClick={() => createVideo.mutate()}
+        disabled={createVideo.isPending}
+      >
+        <PlusIcon className={cn(createVideo.isPending && 'animate-spin')} />
+        Create
+      </Button>
+    </>
   );
 }
 
